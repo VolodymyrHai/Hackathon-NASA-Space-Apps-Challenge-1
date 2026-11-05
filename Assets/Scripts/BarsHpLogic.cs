@@ -7,6 +7,7 @@ public enum BodyPartType {leftLeg,rigthLeg,leftArm,rigthArm,head,body}
 
 public class BarsHpLogic : MonoBehaviour
 {
+    float thirstTimer = 0f;
     private Dictionary<BodyPartType,BodyPart> body = new Dictionary<BodyPartType, BodyPart>();
     [SerializeField] private Image[] images;
     private Image[] imagesBroken;
@@ -25,8 +26,9 @@ public class BarsHpLogic : MonoBehaviour
         body.Add(BodyPartType.rigthArm,new(50,50,false,images[3],imagesBroken[3]));
         body.Add(BodyPartType.head,new(30,30,false,images[4],imagesBroken[4]));
         body.Add(BodyPartType.body,new(70,70,false,images[5],imagesBroken[5]));
-    }
 
+
+    }
     public void ChangeDamage(BodyPartType type, int damage)
     {
         body[type].Damage(damage);
@@ -46,8 +48,8 @@ public class BarsHpLogic : MonoBehaviour
 
 public class BodyPart
 {
-    public int HP {get;private set;}
-    public int maxHP {get;}
+    public float HP {get;private set;}
+    public float maxHP {get;}
     public bool broken {get;private set;}
     public Image image {get;}
     public Image imagesBroken {get;}
