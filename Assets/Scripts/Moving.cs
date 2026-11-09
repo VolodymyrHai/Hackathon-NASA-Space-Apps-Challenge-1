@@ -1,17 +1,25 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class Moving : MonoBehaviour
 {
     public float speed = 4f;
+    public float runSpeed = 7f;
     public float rotationSpeed = 10f;
     public Transform cameraTransform;
 
     private Animator animator;
+    private CharacterController controller;
 
     void Start()
     {
+        controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+
+        if (animator != null)
+            animator.applyRootMotion = false;
 
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
@@ -43,11 +51,22 @@ public class Moving : MonoBehaviour
 
         bool isMoving = movement.sqrMagnitude > 0f;
 
+        bool shiftPressed =
+            Keyboard.current.leftShiftKey.isPressed ||
+            Keyboard.current.rightShiftKey.isPressed;
+
+        bool isRunning = isMoving && shiftPressed;
+        bool isWalking = isMoving && !isRunning;
+
+        float currentSpeed = isRunning ? runSpeed : speed;
+
+        // Movement with gravity and terrain collision
+        controller.SimpleMove(movement * currentSpeed);
+
         if (isMoving)
         {
-            transform.position += movement * speed * Time.deltaTime;
-            
             Quaternion targetRotation = Quaternion.LookRotation(movement);
+
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 targetRotation,
@@ -57,18 +76,18 @@ public class Moving : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("IsWalking", isMoving);
+            animator.SetBool("IsWalking", isWalking);
+            animator.SetBool("IsRunning", isRunning);
 
             if (isMoving)
-            {
                 animator.SetBool("Dance", false);
-            }
 
-            if (Keyboard.current.eKey.wasPressedThisFrame && !isMoving) 
-            { 
+            if (Keyboard.current.eKey.wasPressedThisFrame && !isMoving)
+            {
                 bool isDancing = animator.GetBool("Dance");
-                animator.SetBool("Dance", !isDancing); 
+                animator.SetBool("Dance", !isDancing);
             }
         }
     }
 }
+
