@@ -6191,6 +6191,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MoonBase (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c2273a593815d48a6a07a89bb6caf52b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7344,21 +7348,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 117874, guid: c2e22098ce7c8da4590cceb5113bd50e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 157262, guid: c2e22098ce7c8da4590cceb5113bd50e, type: 3}
       propertyPath: m_Name
       value: Earth
       objectReference: {fileID: 0}
     - target: {fileID: 432644, guid: c2e22098ce7c8da4590cceb5113bd50e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.247875
+      value: -155
       objectReference: {fileID: 0}
     - target: {fileID: 432644, guid: c2e22098ce7c8da4590cceb5113bd50e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.765979
+      value: -66.5
       objectReference: {fileID: 0}
     - target: {fileID: 432644, guid: c2e22098ce7c8da4590cceb5113bd50e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -141.38255
+      value: -418.3
       objectReference: {fileID: 0}
     - target: {fileID: 432644, guid: c2e22098ce7c8da4590cceb5113bd50e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7547,15 +7555,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.35356
+      value: 14.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.65
+      value: -1.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.35356
+      value: 10.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       propertyPath: m_LocalRotation.w
