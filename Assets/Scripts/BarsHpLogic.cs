@@ -56,7 +56,7 @@ public class BodyPart
         this.imagesBroken = imagesBroken != image ? imagesBroken : null;
         Refresh();
     }
-    public void Damage(int damage) { HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); }
+    public void Damage(int damage) { Debug.Log(damage);Debug.Log(HP); HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); Debug.Log(HP);}
     public void Heal(int heal) { HP = Mathf.Min(maxHP,HP+Mathf.Max(0,heal));Refresh(); }
     public void SetBroken(bool value) { broken=value;Refresh(); }
     void Refresh()
