@@ -8,6 +8,7 @@ public enum BodyPartType {leftLeg,rigthLeg,leftArm,rigthArm,head,body}
 public class BarsHpLogic : MonoBehaviour
 {
     readonly Dictionary<BodyPartType,BodyPart> body = new Dictionary<BodyPartType,BodyPart>();
+    public IReadOnlyDictionary<BodyPartType, BodyPart> Body => body;
     [SerializeField] private Image[] images;
     [Tooltip("Optional separate fracture overlays; never use the health image itself.")]
     [SerializeField] private Image[] imagesBroken;
@@ -56,7 +57,7 @@ public class BodyPart
         this.imagesBroken = imagesBroken != image ? imagesBroken : null;
         Refresh();
     }
-    public void Damage(int damage) { Debug.Log(damage);Debug.Log(HP); HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); Debug.Log(HP);}
+    public void Damage(int damage) { HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); Debug.Log(HP);}
     public void Heal(int heal) { HP = Mathf.Min(maxHP,HP+Mathf.Max(0,heal));Refresh(); }
     public void SetBroken(bool value) { broken=value;Refresh(); }
     void Refresh()

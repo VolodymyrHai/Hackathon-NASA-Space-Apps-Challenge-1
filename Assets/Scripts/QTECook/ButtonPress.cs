@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class ButtonPress : MonoBehaviour
 {
@@ -28,19 +29,23 @@ public class ButtonPress : MonoBehaviour
     private float timeLeft;
     private bool isRunning = false;
 
-    private void Start()
-    {
-        StartSequence();
-    }
-
+    public BodyPartType bpt;
     public void StartSequence()
     {
         attempts = 0;
         errors = 0;
         isRunning = true;
+        gameObject.SetActive(true);
+        text.gameObject.SetActive(false);
+        StartCoroutine(waitPlay());
+    }
+    public IEnumerator waitPlay()
+    {
+
+        yield return new WaitForSeconds(2);
+        text.gameObject.SetActive(true);
         ShowNextText();
     }
-
     private void ShowNextText()
     {
         if (attempts >= 15)
@@ -98,9 +103,17 @@ public class ButtonPress : MonoBehaviour
 
     private void RegisterError()
     {
+        images[errors].color = Color.red;
         errors++;
-        ShowError(); 
-
+        StaticBarsLogic.ChangeMind(-5);
+        if (StaticBarsLogic.model.Body[bpt].HP <= StaticBarsLogic.model.Body[bpt].maxHP / 2)
+        {
+            StaticBarsLogic.ChangeMind(-5);
+        }
+        if (StaticBarsLogic.model.Body[bpt].HP <= StaticBarsLogic.model.Body[bpt].maxHP *0.3)
+        {
+            StaticBarsLogic.ChangeMind(-10);
+        }
         if (errors >= maxErrors)
         {
             EndSequence();
@@ -110,20 +123,15 @@ public class ButtonPress : MonoBehaviour
         timeLeft = timePerKey;
     }
 
-    private void ShowError()
-    {
-        images[errors-1].color = Color.red;
-        StaticBarsLogic.Damage(BodyPartType.body, 5);
-        StaticBarsLogic.ChangeHunger(2);
-        StaticBarsLogic.ChangeThirst(-5);
-        StaticBarsLogic.ChangeMind(-2);
-    }
 
     private void EndSequence()
     {
-        StaticBarsLogic.ChangeHunger(27 - 9*errors);
+        images[0].color = Color.white;
+        images[1].color = Color.white;
+        images[2].color = Color.white;
+        StaticBarsLogic.Heal(bpt,30 - 10*errors);
         isRunning = false;
         currentKey = Key.None;
-        text.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }
