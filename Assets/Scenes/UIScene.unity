@@ -695,7 +695,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16a715e3271d0654280028cfaf4de2e2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OrbitCamera
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
   pivot: {fileID: 538439626}
   distance: 8
   sensitivity: 0.2
@@ -704,6 +704,14 @@ MonoBehaviour:
   maxDistance: 20
   yaw: 0
   pitch: 60
+  occlusionShader: {fileID: 4800000, guid: eb383df84fad459491de657ef2b63ce0, type: 3}
+  safeViewDistance: 3.5
+  dissolveTime: 0.18
+  autoReturn: 1
+  straightRunDelay: 1.8
+  manualReturnDelay: 2.5
+  basePitch: 50
+  returnDegreesPerSecond: 65
 --- !u!1 &361706555
 GameObject:
   m_ObjectHideFlags: 0
@@ -2339,33 +2347,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
   m_PrefabInstance: {fileID: 5403727035835406509}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &1728774753
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1728774748}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!4 &1728774757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
@@ -2384,6 +2365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Moving
   speed: 5
+  runSpeed: 7
   rotationSpeed: 10
   cameraTransform: {fileID: 330585546}
 --- !u!136 &1728774760
@@ -2409,6 +2391,31 @@ CapsuleCollider:
   m_Height: 3.8190653
   m_Direction: 1
   m_Center: {x: 0, y: 1.9096086, z: 0.12027264}
+--- !u!143 &1728774761
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728774748}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1735773575
 GameObject:
   m_ObjectHideFlags: 0
@@ -3534,13 +3541,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1728774753}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1728774758}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1728774760}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1728774761}
   m_SourcePrefab: {fileID: 100100000, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
