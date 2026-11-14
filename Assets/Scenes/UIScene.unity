@@ -569,7 +569,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16a715e3271d0654280028cfaf4de2e2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OrbitCamera
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
   pivot: {fileID: 538439626}
   distance: 8
   sensitivity: 0.2
@@ -578,6 +578,14 @@ MonoBehaviour:
   maxDistance: 20
   yaw: 0
   pitch: 60
+  occlusionShader: {fileID: 4800000, guid: eb383df84fad459491de657ef2b63ce0, type: 3}
+  safeViewDistance: 3.5
+  dissolveTime: 0.18
+  autoReturn: 1
+  straightRunDelay: 1.8
+  manualReturnDelay: 2.5
+  basePitch: 50
+  returnDegreesPerSecond: 65
 --- !u!1 &361706555
 GameObject:
   m_ObjectHideFlags: 0

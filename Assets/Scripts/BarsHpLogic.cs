@@ -1,49 +1,44 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Existing enum values and names remain compatible with scene events.
 public enum BodyPartType {leftLeg,rigthLeg,leftArm,rigthArm,head,body}
 
 public class BarsHpLogic : MonoBehaviour
 {
-    float thirstTimer = 0f;
-    private Dictionary<BodyPartType,BodyPart> body = new Dictionary<BodyPartType, BodyPart>();
+    readonly Dictionary<BodyPartType,BodyPart> body = new Dictionary<BodyPartType,BodyPart>();
     [SerializeField] private Image[] images;
-    private Image[] imagesBroken;
-    
+    [Tooltip("Optional separate fracture overlays; never use the health image itself.")]
+    [SerializeField] private Image[] imagesBroken;
+
     public void Awake()
     {
         StaticBarsLogic.model = this;
-        imagesBroken = new Image[images.Length];
-        for(int i = 0; i < images.Length; i++)
+        body.Clear();
+        int[] health = {50,50,50,50,30,70};
+        for(int i=0;i<health.Length;i++)
         {
-            imagesBroken[i] = images[i].GetComponentInChildren<Image>();
+            Image image = images != null && i < images.Length ? images[i] : null;
+            Image overlay = imagesBroken != null && i < imagesBroken.Length ? imagesBroken[i] : null;
+            body[(BodyPartType)i] = new BodyPart(health[i],health[i],false,image,overlay);
         }
-        body.Add(BodyPartType.leftLeg,new(50,50,false,images[0],imagesBroken[0]));
-        body.Add(BodyPartType.rigthLeg,new(50,50,false,images[1],imagesBroken[1]));
-        body.Add(BodyPartType.leftArm,new(50,50,false,images[2],imagesBroken[2]));
-        body.Add(BodyPartType.rigthArm,new(50,50,false,images[3],imagesBroken[3]));
-        body.Add(BodyPartType.head,new(30,30,false,images[4],imagesBroken[4]));
-        body.Add(BodyPartType.body,new(70,70,false,images[5],imagesBroken[5]));
-
-
     }
-    public void ChangeDamage(BodyPartType type, int damage)
+    public bool HasInjuries
     {
-        body[type].Damage(damage);
-        body[type].image.color = new Color();
+        get { foreach (var part in body.Values) if (part.HP < part.maxHP || part.broken) return true; return false; }
     }
-    public void ChangeHeal(BodyPartType type, int heal)
+    public void RestoreBody()
     {
-        body[type].Heal(heal);        
+        foreach (var part in body.Values) { part.Heal(Mathf.CeilToInt(part.maxHP)); part.SetBroken(false); }
     }
-    public void ChangeBroken(BodyPartType type, bool broken)
-    {
-        body[type].SetBroken(broken);        
-    }
-    
-
+    void OnDestroy() { if (StaticBarsLogic.model == this) StaticBarsLogic.model = null; }
+    public void ChangeDamage(BodyPartType type,int damage)
+    { if(body.TryGetValue(type,out BodyPart part)) part.Damage(Mathf.Max(0,damage)); }
+    public void ChangeHeal(BodyPartType type,int heal)
+    { if(body.TryGetValue(type,out BodyPart part)) part.Heal(Mathf.Max(0,heal)); }
+    public void ChangeBroken(BodyPartType type,bool broken)
+    { if(body.TryGetValue(type,out BodyPart part)) part.SetBroken(broken); }
 }
 
 public class BodyPart
@@ -53,29 +48,25 @@ public class BodyPart
     public bool broken {get;private set;}
     public Image image {get;}
     public Image imagesBroken {get;}
-
-    public BodyPart(int HP, int maxHP, bool broken,Image image,Image imagesBroken)
+    public BodyPart(int HP,int maxHP,bool broken,Image image,Image imagesBroken)
     {
-        this.HP = HP;
-        this.broken = broken;
-        this.maxHP = maxHP;
-        this.image = image;
-        this.imagesBroken = imagesBroken;
+        this.maxHP = Mathf.Max(1,maxHP);
+        this.HP = Mathf.Clamp(HP,0,this.maxHP);
+        this.broken = broken; this.image = image;
+        this.imagesBroken = imagesBroken != image ? imagesBroken : null;
+        Refresh();
     }
-
-    public void Damage(int damage)
+    public void Damage(int damage) { HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); }
+    public void Heal(int heal) { HP = Mathf.Min(maxHP,HP+Mathf.Max(0,heal));Refresh(); }
+    public void SetBroken(bool value) { broken=value;Refresh(); }
+    void Refresh()
     {
-        HP = Math.Max(0,HP-damage);
-        image.color = new Color(1-HP/maxHP,HP/maxHP,0);
-    }
-    public void Heal(int heal)
-    {
-        HP = Math.Min(maxHP,HP+heal);
-        image.color = new Color(1-HP/maxHP,HP/maxHP,0);
-    }
-    public void SetBroken(bool broken)
-    {
-        this.broken = broken;
-        imagesBroken.gameObject.SetActive(broken);
+        if(image != null)
+        {
+            Color color = Color.Lerp(Color.red,Color.green,HP/maxHP);
+            if(broken) color=Color.Lerp(color,new Color(1,.5f,0,1),.55f);
+            color.a=1; image.color=color;
+        }
+        if(imagesBroken != null) imagesBroken.gameObject.SetActive(broken);
     }
 }
