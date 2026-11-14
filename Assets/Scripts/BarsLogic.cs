@@ -33,7 +33,10 @@ public class BarsLogic : MonoBehaviour
 
     private float thirstTimer;
     private float hungerTimer;
-
+    void Awake()
+    {
+        StaticBarsLogic.bars = this;
+    }
     private void Start()
     {
         mind = Mathf.Clamp(startMind,0f,100f);
