@@ -126,12 +126,13 @@ public class MoonBaseGenerator : MonoBehaviour
         BuildTunnel("Kitchen Tunnel", new Vector3(-8.45f, 0f, 12f), 3.3f);
         BuildTunnel("Living Tunnel", new Vector3(8.45f, 0f, 12f), 3.3f);
 
-        // Exterior Infrastructure
+        // Exterior Infrastructure & Interiors
         Walkway("Command access", new Vector3(0f, 0.10f, -2f), new Vector3(3.2f, 0.12f, 12f));
         LandingPad(new Vector3(13f, 0f, -11f));
         SolarFarm();
         Utilities();
         FunctionalInteriors(kitchenPos, livingPos);
+        BuildInteriorDetails(mainPos, kitchenPos, livingPos);
         Box("South approach", new Vector3(0f, -0.015f, -22f), new Vector3(5f, 0.15f, 6f), darkMaterial);
 
 #if UNITY_EDITOR
@@ -205,7 +206,7 @@ public class MoonBaseGenerator : MonoBehaviour
             doorAnchor.transform.SetParent(generated.transform, false);
             doorAnchor.transform.localPosition = new Vector3(0f, 0.2f, frontZ);
             var left = Box(title + " door L", new Vector3(-doorWidth * 0.25f, 1.4f, frontZ), new Vector3(doorWidth * 0.5f - 0.05f, 2.5f, 0.16f), structureMaterial);
-                        var right = Box(title + " door R", new Vector3(doorWidth * 0.25f, 1.4f, frontZ), new Vector3(doorWidth * 0.5f - 0.05f, 2.5f, 0.16f), structureMaterial);
+            var right = Box(title + " door R", new Vector3(doorWidth * 0.25f, 1.4f, frontZ), new Vector3(doorWidth * 0.5f - 0.05f, 2.5f, 0.16f), structureMaterial);
             var doorComp = (BaseDoor)doorAnchor.AddComponent(typeof(BaseDoor));
             doorComp.Configure(terrain.player, services, left.transform, right.transform);
 
@@ -411,42 +412,101 @@ public class MoonBaseGenerator : MonoBehaviour
 
     void FunctionalInteriors(Vector3 kitchenPos, Vector3 livingPos)
     {
-        // --- KITCHEN DOME (Left) ---
+        // --- KITCHEN DOME (Left - Solo Setup) ---
         var water = Part(PrimitiveType.Cylinder, "Water dispenser", kitchenPos + new Vector3(-2.3f, 1.0f, 1.4f), new Vector3(0.75f, 1.0f, 0.75f), structureMaterial);
         Station(water, BaseStation.UseKind.Water, "refill water (+40)", 1.3f);
-                Box("Water dispenser tap", kitchenPos + new Vector3(-2.3f, 0.95f, 0.95f), new Vector3(0.25f, 0.12f, 0.3f), solarMaterial, false);
+        Box("Water dispenser tap", kitchenPos + new Vector3(-2.3f, 0.95f, 0.95f), new Vector3(0.25f, 0.12f, 0.3f), solarMaterial, false);
 
-        var food = Box("Food counter", kitchenPos + new Vector3(-0.3f, 0.75f, 2.5f), new Vector3(2.4f, 1.2f, 0.9f), structureMaterial);
+        var food = Box("Food counter", kitchenPos + new Vector3(-0.3f, 0.75f, 2.5f), new Vector3(2.2f, 1.2f, 0.9f), structureMaterial);
         Station(food, BaseStation.UseKind.Food, "take ration (+35)", 1.6f);
-        Box("Kitchen upper cabinet", kitchenPos + new Vector3(-0.3f, 2.1f, 2.7f), new Vector3(2.2f, 0.6f, 0.45f), darkMaterial, false);
+        Box("Kitchen upper cabinet", kitchenPos + new Vector3(-0.3f, 2.1f, 2.7f), new Vector3(2.0f, 0.6f, 0.45f), darkMaterial, false);
 
-        Box("Dining table", kitchenPos + new Vector3(-0.6f, 0.55f, -0.8f), new Vector3(1.8f, 0.12f, 1.1f), structureMaterial);
-        Box("Dining table leg", kitchenPos + new Vector3(-0.6f, 0.28f, -0.8f), new Vector3(0.25f, 0.55f, 0.25f), darkMaterial, false);
-        Box("Dining bench 1", kitchenPos + new Vector3(-0.6f, 0.32f, -1.65f), new Vector3(1.5f, 0.45f, 0.4f), darkMaterial);
-        Box("Dining bench 2", kitchenPos + new Vector3(-0.6f, 0.32f, 0.05f), new Vector3(1.5f, 0.45f, 0.4f), darkMaterial);
+        Box("Dining table", kitchenPos + new Vector3(-0.6f, 0.55f, -0.8f), new Vector3(1.25f, 0.12f, 0.9f), structureMaterial);
+        Box("Dining table leg", kitchenPos + new Vector3(-0.6f, 0.28f, -0.8f), new Vector3(0.22f, 0.55f, 0.22f), darkMaterial, false);
+        Part(PrimitiveType.Cylinder, "Dining stool", kitchenPos + new Vector3(-0.6f, 0.32f, -1.55f), new Vector3(0.55f, 0.22f, 0.55f), darkMaterial);
 
-        // --- LIVING & GYM DOME (Right) ---
-        var bed = Box("Rest bunk", livingPos + new Vector3(-0.8f, 0.45f, 2.2f), new Vector3(1.6f, 0.65f, 2.5f), darkMaterial);
-        Box("Rest mattress", livingPos + new Vector3(-0.8f, 0.82f, 2.2f), new Vector3(1.45f, 0.12f, 2.3f), structureMaterial, false);
-        Box("Upper bunk frame", livingPos + new Vector3(-0.8f, 1.75f, 2.2f), new Vector3(1.55f, 0.12f, 2.4f), structureMaterial, false);
-        Station(bed, BaseStation.UseKind.Rest, "rest (+40 condition)", 3f);
+        // --- LIVING & GYM DOME (Right - Solo Setup) ---
+        var bed = Box("Rest bunk", livingPos + new Vector3(-0.8f, 0.45f, 2.2f), new Vector3(1.4f, 0.65f, 2.4f), darkMaterial);
+        Box("Rest mattress", livingPos + new Vector3(-0.8f, 0.82f, 2.2f), new Vector3(1.28f, 0.12f, 2.25f), structureMaterial, false);
+        Station(bed, BaseStation.UseKind.Rest, "rest (+40 sanity)", 3f);
 
         var med = Box("Medical station", livingPos + new Vector3(1.8f, 0.85f, 1.9f), new Vector3(1.3f, 1.4f, 0.9f), structureMaterial);
         Station(med, BaseStation.UseKind.Medical, "treat injuries and fractures", 3f);
         Box("Medical cross horizontal", livingPos + new Vector3(1.8f, 1.35f, 1.42f), new Vector3(0.65f, 0.15f, 0.03f), accentMaterial, false);
         Box("Medical cross vertical", livingPos + new Vector3(1.8f, 1.35f, 1.41f), new Vector3(0.15f, 0.65f, 0.03f), accentMaterial, false);
 
-        Box("Treadmill deck", livingPos + new Vector3(-0.5f, 0.25f, -2.1f), new Vector3(0.95f, 0.18f, 1.9f), darkMaterial);
+        // Solo Gym Area (Interactive Treadmill -> restores Sanity)
+        var treadmill = Box("Treadmill deck", livingPos + new Vector3(-0.5f, 0.25f, -2.1f), new Vector3(0.95f, 0.18f, 1.9f), darkMaterial);
+        Station(treadmill, BaseStation.UseKind.Workout, "work out (+35 sanity)", 2.5f);
         Box("Treadmill console", livingPos + new Vector3(-0.5f, 1.05f, -2.95f), new Vector3(0.85f, 1.35f, 0.22f), structureMaterial);
         Box("Treadmill screen", livingPos + new Vector3(-0.5f, 1.45f, -2.82f), new Vector3(0.55f, 0.35f, 0.05f), solarMaterial, false);
 
-        Box("Gym rack L", livingPos + new Vector3(1.6f, 1.1f, -2.3f), new Vector3(0.14f, 2.0f, 0.14f), darkMaterial);
-        Box("Gym rack R", livingPos + new Vector3(2.8f, 1.1f, -2.3f), new Vector3(0.14f, 2.0f, 0.14f), darkMaterial);
-        Box("Gym barbell", livingPos + new Vector3(2.2f, 1.45f, -2.3f), new Vector3(1.7f, 0.08f, 0.08f), accentMaterial, false);
+        Box("Workout bench", livingPos + new Vector3(1.85f, 0.32f, -2.1f), new Vector3(0.55f, 0.42f, 1.45f), darkMaterial);
+        Box("Dumbbell handle L", livingPos + new Vector3(1.4f, 0.25f, -2.4f), new Vector3(0.32f, 0.06f, 0.06f), accentMaterial, false);
+        Box("Dumbbell handle R", livingPos + new Vector3(1.4f, 0.25f, -1.8f), new Vector3(0.32f, 0.06f, 0.06f), accentMaterial, false);
 
         var power = Box("Base power cabinet", new Vector3(-18.5f, 1.05f, 4f), new Vector3(0.9f, 1.8f, 0.5f), darkMaterial);
         Station(power, BaseStation.UseKind.Power, "toggle base power", 0.8f);
         var inverter = Box("Solar inverter", new Vector3(-22f, 0.7f, 1f), new Vector3(1.1f, 1.3f, 0.9f), darkMaterial);
         Station(inverter, BaseStation.UseKind.Solar, "toggle solar panel charging", 0.8f);
+    }
+
+    void BuildInteriorDetails(Vector3 mainPos, Vector3 kitchenPos, Vector3 livingPos)
+    {
+        // ==========================================
+        // 1. CENTRAL COMMAND DOME (Solo Operator)
+        // ==========================================
+        Part(PrimitiveType.Cylinder, "Holo table base", mainPos + new Vector3(0f, 0.45f, -1.2f), new Vector3(1.5f, 0.35f, 1.5f), darkMaterial, true);
+        Part(PrimitiveType.Cylinder, "Holo table rim", mainPos + new Vector3(0f, 0.82f, -1.2f), new Vector3(1.7f, 0.06f, 1.7f), structureMaterial, false);
+        Part(PrimitiveType.Cylinder, "Holo projection", mainPos + new Vector3(0f, 0.92f, -1.2f), new Vector3(1.35f, 0.02f, 1.35f), solarMaterial, false);
+
+        for (int side = -1; side <= 1; side += 2)
+        {
+            Vector3 rackPos = mainPos + new Vector3(side * 3.4f, 1.25f, 3.4f);
+            Box("Server rack " + side, rackPos, new Vector3(1.1f, 2.2f, 0.8f), darkMaterial, true);
+            Box("Server stripe A " + side, rackPos + new Vector3(0f, 0.55f, -0.41f), new Vector3(0.8f, 0.08f, 0.02f), solarMaterial, false);
+            Box("Server stripe B " + side, rackPos + new Vector3(0f, 0.15f, -0.41f), new Vector3(0.8f, 0.08f, 0.02f), accentMaterial, false);
+        }
+
+        Vector3 chairPos = mainPos + new Vector3(0f, 0.35f, 1.15f);
+        Part(PrimitiveType.Cylinder, "Operator chair base", chairPos, new Vector3(0.48f, 0.25f, 0.48f), darkMaterial, false);
+        Box("Operator chair seat", chairPos + Vector3.up * 0.28f, new Vector3(0.58f, 0.1f, 0.58f), structureMaterial, false);
+        Box("Operator chair back", chairPos + Vector3.up * 0.65f + Vector3.back * 0.25f, new Vector3(0.54f, 0.62f, 0.1f), structureMaterial, false);
+
+        // ==========================================
+        // 2. KITCHEN DOME (Solo Astronaut)
+        // ==========================================
+        Box("Kitchen fridge", kitchenPos + new Vector3(1.65f, 1.15f, 2.35f), new Vector3(1.05f, 2.0f, 0.9f), structureMaterial, true);
+        Box("Fridge handle", kitchenPos + new Vector3(1.25f, 1.15f, 1.88f), new Vector3(0.06f, 0.65f, 0.08f), accentMaterial, false);
+
+        Box("Hydroponics frame", kitchenPos + new Vector3(-2.65f, 1.05f, -1.2f), new Vector3(0.75f, 1.85f, 1.8f), darkMaterial, true);
+        for (int shelf = 0; shelf < 3; shelf++)
+        {
+            float sy = 0.55f + shelf * 0.55f;
+            Box("Hydro tray " + shelf, kitchenPos + new Vector3(-2.65f, sy, -1.2f), new Vector3(0.65f, 0.12f, 1.65f), structureMaterial, false);
+            Box("Hydro plants " + shelf, kitchenPos + new Vector3(-2.65f, sy + 0.12f, -1.2f), new Vector3(0.52f, 0.14f, 1.5f), solarMaterial, false);
+        }
+
+        Part(PrimitiveType.Cylinder, "Solo plate", kitchenPos + new Vector3(-0.6f, 0.63f, -1.0f), new Vector3(0.32f, 0.02f, 0.32f), structureMaterial, false);
+        Part(PrimitiveType.Cylinder, "Solo mug", kitchenPos + new Vector3(-0.32f, 0.68f, -1.05f), new Vector3(0.11f, 0.07f, 0.11f), accentMaterial, false);
+
+        // ==========================================
+        // 3. LIVING & GYM DOME (Solo Astronaut)
+        // ==========================================
+        Box("Solo pillow", livingPos + new Vector3(-0.8f, 0.93f, 3.05f), new Vector3(0.85f, 0.14f, 0.45f), accentMaterial, false);
+        Box("Nightstand", livingPos + new Vector3(-1.95f, 0.35f, 2.85f), new Vector3(0.55f, 0.55f, 0.55f), structureMaterial, true);
+        Box("Personal tablet", livingPos + new Vector3(-1.95f, 0.65f, 2.85f), new Vector3(0.28f, 0.03f, 0.2f), solarMaterial, false);
+
+        Box("Crew locker", livingPos + new Vector3(-2.55f, 1.05f, 1.45f), new Vector3(0.85f, 1.85f, 0.85f), structureMaterial, true);
+        Box("Locker vent", livingPos + new Vector3(-2.11f, 1.55f, 1.45f), new Vector3(0.03f, 0.35f, 0.45f), darkMaterial, false);
+
+        // Interactive Exercise Bike -> restores Sanity
+        var bike = Box("Exercise bike base", livingPos + new Vector3(-2.1f, 0.25f, -1.8f), new Vector3(0.55f, 0.14f, 1.25f), darkMaterial, true);
+        Station(bike, BaseStation.UseKind.Workout, "ride exercise bike (+35 sanity)", 2.5f);
+        Part(PrimitiveType.Cylinder, "Bike flywheel", livingPos + new Vector3(-2.1f, 0.58f, -2.15f), new Vector3(0.52f, 0.08f, 0.52f), structureMaterial, false);
+        Box("Bike handlebar post", livingPos + new Vector3(-2.1f, 0.85f, -2.2f), new Vector3(0.12f, 0.85f, 0.12f), darkMaterial, false);
+        Box("Bike seat", livingPos + new Vector3(-2.1f, 0.82f, -1.45f), new Vector3(0.28f, 0.1f, 0.34f), accentMaterial, false);
+
+        Box("Exercise mat", livingPos + new Vector3(0.65f, 0.21f, -1.45f), new Vector3(0.85f, 0.03f, 1.65f), accentMaterial, false);
     }
 }
