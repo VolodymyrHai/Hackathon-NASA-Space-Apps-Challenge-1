@@ -23,6 +23,10 @@ public class BarsLogic : MonoBehaviour
     public UnityEvent onHungerEmpty;
     public UnityEvent onMindEmpty;
 
+    public float ThirstPercent => thirst;
+    public float HungerPercent => hunger;
+    public float MindPercent => mind;
+
     private float thirst = 100f;
     private float hunger = 100f;
     private float mind;
@@ -32,24 +36,28 @@ public class BarsLogic : MonoBehaviour
 
     private void Start()
     {
-        mind = startMind;
+        mind = Mathf.Clamp(startMind,0f,100f);
         UpdateUI();
     }
 
     private void Update()
     {
         thirstTimer += Time.deltaTime;
-        if (thirstTimer >= thirstInterval)
+        float waterPeriod = Mathf.Max(.1f, thirstInterval);
+        if (thirstTimer >= waterPeriod)
         {
-            thirstTimer -= thirstInterval;
-            ChangeThirst(-thirstDrain);
+            int ticks = Mathf.FloorToInt(thirstTimer / waterPeriod);
+            thirstTimer -= ticks * waterPeriod;
+            ChangeThirst(-Mathf.Max(0f, thirstDrain) * ticks);
         }
 
         hungerTimer += Time.deltaTime;
-        if (hungerTimer >= hungerInterval)
+        float foodPeriod = Mathf.Max(.1f, hungerInterval);
+        if (hungerTimer >= foodPeriod)
         {
-            hungerTimer -= hungerInterval;
-            ChangeHunger(-hungerDrain);
+            int ticks = Mathf.FloorToInt(hungerTimer / foodPeriod);
+            hungerTimer -= ticks * foodPeriod;
+            ChangeHunger(-Mathf.Max(0f, hungerDrain) * ticks);
         }
     }
 

@@ -45,6 +45,21 @@ public class MoonWorldGenerator : MonoBehaviour
     public Transform previewCenter;
     [Min(16)] public float previewDistance = 768;
 
+    [Header("Main base foundation")]
+    public bool flattenBaseSite = true;
+    public Vector2 baseCenter = new Vector2(-1.34963f, 17.68174f);
+    public float baseHeight = -4f;
+    [Min(16)] public float baseFlatRadius = 52f;
+    [Min(1)] public float baseBlendWidth = 28f;
+
+    // Uses exactly the same deterministic height function as visual/physics chunks.
+    public float SampleHeightLocal(float x, float z)
+    {
+        Sanitize();
+        var key = new Vector2Int(Mathf.FloorToInt(x / chunkSize), Mathf.FloorToInt(z / chunkSize));
+        return Height(x, z, Craters(key));
+    }
+
     sealed class Chunk
     {
         public GameObject obj;
@@ -158,7 +173,10 @@ public class MoonWorldGenerator : MonoBehaviour
         }
         Vector2 center = Center();
         float radius = Application.isPlaying ? viewDistance : previewDistance;
-        if (lastRadius != radius || (center - lastCenter).sqrMagnitude > 0.01f)
+        // Reuse the pending queue between steps instead of sorting the entire
+        // world for every 10 cm of movement. Collision coverage has the same margin.
+        float refreshStep = RefreshStep();
+        if (lastRadius != radius || (center - lastCenter).sqrMagnitude >= refreshStep * refreshStep)
             Refresh(center, radius);
         if (buildDistant)
             for (int i = 0; i < Mathf.Clamp(chunksPerFrame, 1, 8) && queue.Count > 0; i++)
@@ -166,6 +184,14 @@ public class MoonWorldGenerator : MonoBehaviour
                 Request r = queue.Dequeue();
                 if (wanted.Contains(r.key)) Build(r.key, r.lod, false);
             }
+    }
+    float RefreshStep()
+    {
+        return Mathf.Clamp(Mathf.Min(chunkSize * .0625f, colliderDistance * .125f), .25f, 8f);
+    }
+    public void PreparePlayerCollision()
+    {
+        if (Application.isPlaying && isActiveAndEnabled) Tick(false);
     }
     // Minimum XZ distance to the chunk's square. Whole chunks are cut off.
     float Distance(Vector2Int key, Vector2 p)
@@ -188,7 +214,7 @@ public class MoonWorldGenerator : MonoBehaviour
             float d = Distance(key, center);
             if (d > radius) continue;
             wanted.Add(key);
-            bool collision = Application.isPlaying && d <= colliderDistance;
+            bool collision = Application.isPlaying && d <= colliderDistance + RefreshStep();
             int lod = collision || d <= nearDistance ? 0 : d <= mediumDistance ? 1 : 2;
             if (collision) Build(key, lod, true); // Synchronous safety ring, no distant queue delay.
             else
@@ -317,6 +343,14 @@ public class MoonWorldGenerator : MonoBehaviour
             float fade = 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(1.2f, 1.4f, d));
             h += depth * 0.35f * rim * fade;
         }
+        if (flattenBaseSite)
+        {
+            float distance = Vector2.Distance(new Vector2(x, z), baseCenter);
+            float blend = Mathf.Clamp01((distance - Mathf.Max(16f, baseFlatRadius)) / Mathf.Max(1f, baseBlendWidth));
+            // Quintic falloff keeps the apron boundary smooth in height and slope.
+            blend = blend * blend * blend * (blend * (blend * 6f - 15f) + 10f);
+            h = Mathf.Lerp(baseHeight, h, blend);
+        }
         return h;
     }
     Mesh MakeMesh(Vector2Int key, int n, bool skirts)
@@ -358,7 +392,7 @@ public class MoonWorldGenerator : MonoBehaviour
         }
         var mesh = new Mesh { name = "Moon mesh", hideFlags = HideFlags.DontSave, indexFormat = IndexFormat.UInt32 };
         mesh.SetVertices(vertices); mesh.SetNormals(normals); mesh.SetUVs(0, uv); mesh.SetTriangles(triangles, 0);
-        mesh.RecalculateBounds(); return mesh;
+        mesh.RecalculateTangents(); mesh.RecalculateBounds(); return mesh;
     }
     void OnDrawGizmosSelected()
     {
