@@ -6,7 +6,6 @@ public static class StaticBarsLogic
     public static void Heal(BodyPartType type,int heal) { if(model!=null) model.ChangeHeal(type,heal); }
     public static void Break(BodyPartType type,bool broken) { if(model!=null) model.ChangeBroken(type,broken); }
 
-    static public BarsHpLogic model;
     static public RadBarsLogic rad;
     static public BarsLogic bars;
     static public void Oxygen( int change)
@@ -19,6 +18,7 @@ public static class StaticBarsLogic
         // -1 або 0 або 1 для зміни
         rad.radiationChange = change;
     }
+<<<<<<<<< Temporary merge branch 1
     static public void ChangeThirst(int change)
     {
         bars.ChangeThirst(change);
@@ -30,5 +30,5 @@ public static class StaticBarsLogic
     static public void ChangeMind(int change)
     {
         bars.ChangeMind(change);
-    }
+>>>>>>>>> Temporary merge branch 2
 }
