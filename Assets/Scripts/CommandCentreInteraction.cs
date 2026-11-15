@@ -41,6 +41,22 @@ public class CommandCentreInteraction : MonoBehaviour
         solarPanelTMP.text = "Solar Panel: Active";
 
     }
+    void Update()
+    {
+        if (isSolarPanelActive)
+        {
+        solarPanelTMP.text = "Solar Panel: Active";
+        }
+        else
+        {
+        solarPanelTMP.text = "Solar Panel: Unactive";
+        }
+        waterTMP.text = "Water: "+water;
+        foodTMP.text = "Food: "+food;
+        energyTMP.text = "Energy: "+energy+"%";
+        medicineTMP.text = "Medicine: "+medicine;
+        solarPanelTMP.text = "Solar Panel: Active";
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == playerTag)

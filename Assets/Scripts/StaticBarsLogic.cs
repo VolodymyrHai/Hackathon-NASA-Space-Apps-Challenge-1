@@ -20,7 +20,12 @@ public static class StaticBarsLogic
     }
     static public void Radiation(int change)
     {
-        rada =change;
+        Debug.Log(change);
+        if (change > 0)
+        {
+            rada = change;
+        }
+        Debug.Log(change);
         rad.radiationChange = change;
     }
     static public void ChangeThirst(int change)

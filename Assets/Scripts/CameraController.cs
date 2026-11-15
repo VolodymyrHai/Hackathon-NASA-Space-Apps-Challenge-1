@@ -64,18 +64,18 @@ public class CameraController : MonoBehaviour
     void CaptureCursor()
     {
         if (ownsCursor) return;
-        previousLock = Cursor.lockState;
-        previousVisible = Cursor.visible;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //previousLock = Cursor.lockState;
+        //previousVisible = Cursor.visible;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
         ownsCursor = true;
     }
 
     void ReleaseCursor()
     {
         if (!ownsCursor) return;
-        Cursor.lockState = previousLock;
-        Cursor.visible = previousVisible;
+        //Cursor.lockState = previousLock;
+        //Cursor.visible = previousVisible;
         ownsCursor = false;
     }
 
