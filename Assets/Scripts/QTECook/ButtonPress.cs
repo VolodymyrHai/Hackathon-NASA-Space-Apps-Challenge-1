@@ -37,6 +37,7 @@ public class ButtonPress : MonoBehaviour
         isRunning = true;
         gameObject.SetActive(true);
         text.gameObject.SetActive(false);
+        CommandCentreInteraction.medicine-=1;
         StartCoroutine(waitPlay());
     }
     public IEnumerator waitPlay()

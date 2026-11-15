@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
 public class CommandCentreInteraction : MonoBehaviour
 {
     [Header ("UI")]
@@ -18,29 +17,29 @@ public class CommandCentreInteraction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI medicineTMP;
     [SerializeField] private TextMeshProUGUI solarPanelTMP;
 
-    private int water;
-    private int food;
-    private int energy;
-    private int medicine;
-    private bool isSolarPanelActive;
+    public static int water;
+    public static int food;
+    public float energy;
+    public static int medicine;
+    public bool isSolarPanelActive;
 
 
     private string playerTag = "Player";
     private bool isActiveCanvas;
 
-    private void Start()
+    /*private void Start()
     {
-        waterTMP.text = "Water: 15";
-        foodTMP.text = "Food: 10";
-        energyTMP.text = "Energy: 100%";
-        medicineTMP.text = "Medicine: 5";
-        solarPanelTMP.text = "Solar Panel: Active";
-
         water = 15;
         food = 10;
         energy = 100;
         medicine = 5;
         isSolarPanelActive = true;
+
+        waterTMP.text = "Water: "+water;
+        foodTMP.text = "Food: "+food;
+        energyTMP.text = "Energy: "+energy+"%";
+        medicineTMP.text = "Medicine: "+medicine;
+        solarPanelTMP.text = "Solar Panel: Active";
 
     }
     private void OnTriggerEnter(Collider other)
@@ -75,5 +74,5 @@ public class CommandCentreInteraction : MonoBehaviour
     {
         canvas.SetActive(false);
         isActiveCanvas = false;
-    }
+    }*/
 }
