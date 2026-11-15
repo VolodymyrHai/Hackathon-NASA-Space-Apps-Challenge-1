@@ -13,7 +13,6 @@ public class CommandCentreInteraction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waterTMP;
     [SerializeField] private TextMeshProUGUI foodTMP;
     [SerializeField] private TextMeshProUGUI energyTMP;
-    [SerializeField] private TextMeshProUGUI WaterTMP;
     [SerializeField] private TextMeshProUGUI medicineTMP;
     [SerializeField] private TextMeshProUGUI solarPanelTMP;
 
@@ -68,6 +67,7 @@ public class CommandCentreInteraction : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         canvas.SetActive(false);
+        hintCanvas.SetActive(false);
     }
 
     public void CloseCanvas()
