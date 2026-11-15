@@ -9,8 +9,6 @@ public class Magas : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private Image image;
     [SerializeField] private Button[] btn;
-    [Tooltip("Якщо призначено, покупка скидає аірдроп біля бази. Якщо пусто, ресурси додаються одразу")]
-    [SerializeField] private AirdropSpawner airdrop;
 
     private bool buy = true;
 

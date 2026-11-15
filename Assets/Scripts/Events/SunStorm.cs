@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class SunStorm : MonoBehaviour
 {
+    [SerializeField] private Messanger messanger;
     [Header("Радіація")]
     public bool affectRadiation = true;
     public int radiationDuringEvent = 3;
@@ -32,6 +33,8 @@ public class SunStorm : MonoBehaviour
     [ContextMenu("Start Event")]
     public void StartEvent()
     {
+        messanger.Show();
+        EnergyCost.broken = true;
         target = 1f;
 
         if (affectRadiation && !radiationActive)

@@ -16,6 +16,7 @@ using UnityEngine.UI;
 /// </summary>
 public class DustStorm : MonoBehaviour
 {
+    [SerializeField] private Messanger messanger;
     [Header("Керування")]
     public bool startOnPlay = false;
     [Min(0f)] public float fadeInTime = 4f;
@@ -109,6 +110,8 @@ public class DustStorm : MonoBehaviour
     [ContextMenu("Start Storm")]
     public void StartStorm()
     {
+        messanger.Show();
+        EnergyCost.broken = true;
         target = 1f;
 
         if (affectRadiation && !radiationActive)

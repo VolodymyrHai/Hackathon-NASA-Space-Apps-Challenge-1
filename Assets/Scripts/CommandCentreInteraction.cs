@@ -26,7 +26,7 @@ public class CommandCentreInteraction : MonoBehaviour
     private string playerTag = "Player";
     private bool isActiveCanvas;
 
-    /*private void Start()
+    private void Start()
     {
         water = 15;
         food = 10;
@@ -74,5 +74,5 @@ public class CommandCentreInteraction : MonoBehaviour
     {
         canvas.SetActive(false);
         isActiveCanvas = false;
-    }*/
+    }
 }
