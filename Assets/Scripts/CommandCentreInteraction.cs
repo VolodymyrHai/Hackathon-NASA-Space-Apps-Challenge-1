@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
 public class CommandCentreInteraction : MonoBehaviour
 {
     [Header ("UI")]
@@ -14,7 +13,6 @@ public class CommandCentreInteraction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waterTMP;
     [SerializeField] private TextMeshProUGUI foodTMP;
     [SerializeField] private TextMeshProUGUI energyTMP;
-    [SerializeField] private TextMeshProUGUI WaterTMP;
     [SerializeField] private TextMeshProUGUI medicineTMP;
     [SerializeField] private TextMeshProUGUI solarPanelTMP;
 
