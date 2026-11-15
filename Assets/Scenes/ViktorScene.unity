@@ -1972,11 +1972,11 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42261827, y: -0, z: -0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 13.2, z: -9.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 14.7, y: 6.52, z: 5.28}
+  m_LocalScale: {x: 0.6, y: 0.60000014, z: 0.60000014}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1728774757}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -2050,7 +2050,11 @@ MonoBehaviour:
   safeViewDistance: 3.5
   occlusionShader: {fileID: 4800000, guid: eb383df84fad459491de657ef2b63ce0, type: 3}
   dissolveTime: 0.18
+  lowerPitchIndoors: 1
+  indoorPitch: 22
+  ceilingCheckHeight: 4.5
   autoReturn: 1
+  followEveryMove: 1
   straightRunDelay: 1.8
   manualReturnDelay: 2.5
   basePitch: 50
@@ -10786,9 +10790,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 330585546}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d48667796dfe52d4ca24e63215e5f9c2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 538439626}
     m_AddedComponents:
@@ -10808,6 +10809,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 330585546}
   - {fileID: 5403727035835406509}
   - {fileID: 1978020674}
   - {fileID: 811427219}
