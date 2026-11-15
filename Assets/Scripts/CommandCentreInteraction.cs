@@ -69,6 +69,7 @@ public class CommandCentreInteraction : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         canvas.SetActive(false);
+        hintCanvas.SetActive(false);
     }
 
     public void CloseCanvas()

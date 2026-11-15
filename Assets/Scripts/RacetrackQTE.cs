@@ -75,6 +75,7 @@ public class RacetrackQTE : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         isPlayer = false;
+        hintCanvas.SetActive(false);
     }
     private void Update()
     {
