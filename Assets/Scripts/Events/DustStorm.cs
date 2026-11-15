@@ -5,6 +5,14 @@ using UnityEngine.UI;
 /// Візуал пилової бурі: туман + частинки пилу + екранний фільтр.
 /// Усе створюється з коду. Викликайте StartStorm() / StopStorm().
 /// Плавно наростає й згасає.
+///
+/// З іншого скрипта:
+///   DustStorm.Instance.StartStorm();
+///   DustStorm.Instance.StopStorm();         // плавно
+///   DustStorm.Instance.StopStormInstant();  // миттєво
+///   DustStorm.Instance.SetStorm(true/false);
+///   DustStorm.Instance.ToggleStorm();
+///   DustStorm.Instance.IsActive;
 /// </summary>
 public class DustStorm : MonoBehaviour
 {
@@ -41,8 +49,17 @@ public class DustStorm : MonoBehaviour
     [Tooltip("Значення, яке передається в StaticBarsLogic.Radiation() під час бурі")]
     public int radiationDuringStorm = 2;
 
+    /// <summary>Доступ до бурі з будь-якого скрипта (використовуйте у Start(), а не в Awake()).</summary>
+    public static DustStorm Instance { get; private set; }
+
     /// <summary>Сила бурі 0..1. Можна використати в геймплеї (сповільнення, видимість тощо).</summary>
     public float Intensity { get; private set; }
+
+    /// <summary>true, поки буря триває або ще не повністю згасла.</summary>
+    public bool IsActive => target > 0f || Intensity > 0f;
+
+    /// <summary>Чи показується візуал бурі. Не впливає на радіацію й Intensity.</summary>
+    public bool VisualsVisible { get; private set; } = true;
 
     private float target;
     private bool radiationActive;
@@ -66,6 +83,8 @@ public class DustStorm : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         origFog = RenderSettings.fog;
         origFogColor = RenderSettings.fogColor;
         origFogMode = RenderSettings.fogMode;
@@ -85,6 +104,8 @@ public class DustStorm : MonoBehaviour
         if (startOnPlay) StartStorm();
     }
 
+    // ───────────── Керування ─────────────
+
     [ContextMenu("Start Storm")]
     public void StartStorm()
     {
@@ -97,6 +118,7 @@ public class DustStorm : MonoBehaviour
         }
     }
 
+    /// <summary>Плавно вимикає бурю (згасає за fadeOutTime).</summary>
     [ContextMenu("Stop Storm")]
     public void StopStorm()
     {
@@ -108,6 +130,46 @@ public class DustStorm : MonoBehaviour
             StaticBarsLogic.Radiation(0);
         }
     }
+
+    /// <summary>Вмикає або вимикає бурю (плавно).</summary>
+    public void SetStorm(bool on)
+    {
+        if (on) StartStorm();
+        else StopStorm();
+    }
+
+    /// <summary>Перемикає стан бурі.</summary>
+    public void ToggleStorm()
+    {
+        SetStorm(target <= 0f);
+    }
+
+    /// <summary>Вимикає бурю миттєво, без плавного згасання.</summary>
+    [ContextMenu("Stop Storm Instantly")]
+    public void StopStormInstant()
+    {
+        StopStorm();       // target = 0 і скидання радіації
+        Intensity = 0f;
+        Apply();           // повертає туман, сонце, фільтр
+        clouds.Clear();    // прибирає частинки, що вже летять
+        streaks.Clear();
+    }
+
+    /// <summary>Показує або ховає лише візуал (туман, частинки, фільтр, сонце). Логіка бурі й радіація не змінюються.</summary>
+    public void SetVisuals(bool visible)
+    {
+        VisualsVisible = visible;
+
+        if (!visible)
+        {
+            clouds.Clear();   // прибрати частинки, що вже летять
+            streaks.Clear();
+        }
+
+        Apply();
+    }
+
+    // ───────────── Оновлення ─────────────
 
     private void Update()
     {
@@ -137,7 +199,7 @@ public class DustStorm : MonoBehaviour
 
     private void Apply()
     {
-        float t = Intensity;
+        float t = VisualsVisible ? Intensity : 0f;
 
         // туман
         if (useFog)
@@ -329,6 +391,8 @@ public class DustStorm : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this) Instance = null;
+
         if (radiationActive)
         {
             radiationActive = false;

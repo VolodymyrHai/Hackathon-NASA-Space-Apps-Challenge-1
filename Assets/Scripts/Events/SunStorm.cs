@@ -18,24 +18,13 @@ public class SunStorm : MonoBehaviour
 
     private float target;
     private bool radiationActive;
-    private GameObject overlayRoot;
+    [SerializeField]private GameObject overlayRoot;
+    public static GameObject SunCan;
     private Image overlayImage;
 
     private void Awake()
     {
-        overlayRoot = new GameObject("SolarOverlay", typeof(Canvas));
-        var canvas = overlayRoot.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 51;
-
-        var tint = new GameObject("Tint", typeof(RectTransform), typeof(Image));
-        tint.transform.SetParent(overlayRoot.transform, false);
-        var rt = tint.GetComponent<RectTransform>();
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.one;
-        rt.offsetMin = rt.offsetMax = Vector2.zero;
-
-        overlayImage = tint.GetComponent<Image>();
+        overlayImage = overlayRoot.GetComponentInChildren<Image>();
         overlayImage.raycastTarget = false;
         overlayImage.color = new Color(tintColor.r, tintColor.g, tintColor.b, 0f);
     }

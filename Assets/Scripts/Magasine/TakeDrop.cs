@@ -8,7 +8,6 @@ public class TakeDrop : MonoBehaviour
     {
         if(Player && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            Debug.Log("123123");
             AirdropSpawner s = gameObject.GetComponent<AirdropSpawner>();
             CommandCentreInteraction.food += s.food;
             CommandCentreInteraction.water += s.water;
