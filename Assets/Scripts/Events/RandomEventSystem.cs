@@ -19,15 +19,15 @@ public class RandomEventSystem : MonoBehaviour
         [Tooltip("Скільки секунд після ЗАВЕРШЕННЯ події вона не може повторитися")]
         [Min(0f)] public float cooldown = 0f;
 
-        public UnityEvent onStart; 
-        public UnityEvent onEnd;    
+        public UnityEvent onStart;
+        public UnityEvent onEnd;
 
         [NonSerialized] public float lastEndTime = -9999f;
     }
 
     [Header("Налаштування")]
-    public float checkInterval = 5f; 
-    public bool autoRoll = true;  
+    public float checkInterval = 5f;
+    public bool autoRoll = true;
 
     [Header("Список подій")]
     public List<GameEvent> events = new List<GameEvent>();
