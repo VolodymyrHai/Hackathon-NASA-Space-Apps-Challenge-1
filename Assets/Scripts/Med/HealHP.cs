@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class HealHP : MonoBehaviour
 {
     [SerializeField] private Image canvas;
-    [SerializeField] private Image pressE;
+    [SerializeField] private GameObject pressE;
     bool Player;
     void Update()
     {
