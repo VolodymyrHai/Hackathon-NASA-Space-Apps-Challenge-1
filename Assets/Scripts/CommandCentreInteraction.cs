@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
 public class CommandCentreInteraction : MonoBehaviour
 {
     [Header ("UI")]
