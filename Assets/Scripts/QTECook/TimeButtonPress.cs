@@ -21,7 +21,7 @@ public class TimeButtonPress : MonoBehaviour
         first =true;
         play = false;
     }
-    void Start()
+    void OEnable()
     {
         StartQTE();
     }
@@ -29,6 +29,7 @@ public class TimeButtonPress : MonoBehaviour
     {
         amount = 0;
         failed = 0;
+        CommandCentreInteraction.food-=10;
         image.color = Color.red;
         StartCoroutine(Wait());
     }
