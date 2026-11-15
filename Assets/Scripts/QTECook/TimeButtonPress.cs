@@ -27,11 +27,12 @@ public class TimeButtonPress : MonoBehaviour
     }
     public void StartQTE()
     {
+        if(CommandCentreInteraction.food>=3){
         amount = 0;
         failed = 0;
         CommandCentreInteraction.food-=3;
         image.color = Color.red;
-        StartCoroutine(Wait());
+        StartCoroutine(Wait());}
     }
     private IEnumerator Wait()
     {

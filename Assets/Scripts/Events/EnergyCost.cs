@@ -7,12 +7,16 @@ public class EnergyCost : MonoBehaviour
 
     [Header("ZoneToBreath")]
     [SerializeField] private GameObject[] zone;
+    private Light[] l;
     [SerializeField] private CommandCentreInteraction energy;
 
     [SerializeField] private float timer;
     [SerializeField] private float hm;
     private bool ok = true;
-
+    void Awake()
+    {
+        l=FindObjectsByType<Light>();
+    }
     private float time;
     void Update()
     {
@@ -53,12 +57,20 @@ public class EnergyCost : MonoBehaviour
         {
             zone[i].SetActive(false);
         }
+        for(int i = 0; i < l.Length; i++)
+        {
+            l[i].gameObject.SetActive(false);
+        }
     }
     private void OnZone()
     {
         for(int i =0; i < zone.Length; i++)
         {
             zone[i].SetActive(true);
+        }
+        for(int i = 0; i < l.Length; i++)
+        {
+            l[i].gameObject.SetActive(true);
         }
     }
 

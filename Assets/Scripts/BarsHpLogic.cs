@@ -40,6 +40,11 @@ public class BarsHpLogic : MonoBehaviour
     { if(body.TryGetValue(type,out BodyPart part)) part.Heal(Mathf.Max(0,heal)); }
     public void ChangeBroken(BodyPartType type,bool broken)
     { if(body.TryGetValue(type,out BodyPart part)) part.SetBroken(broken); }
+    void Update()
+    {
+        if(body[BodyPartType.head].HP==0||body[BodyPartType.body].HP==0||(body[BodyPartType.rigthArm].HP==0 && body[BodyPartType.leftArm].HP==0 && body[BodyPartType.rigthLeg].HP==0 && body[BodyPartType.leftLeg].HP==0))
+            StaticBarsLogic.d.SmertjVNishchitje();
+    }
 }
 
 public class BodyPart
@@ -57,7 +62,7 @@ public class BodyPart
         this.imagesBroken = imagesBroken != image ? imagesBroken : null;
         Refresh();
     }
-    public void Damage(int damage) { HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); Debug.Log(HP);}
+    public void Damage(int damage) {         HP = Mathf.Max(0,HP-Mathf.Max(0,damage));Refresh(); Debug.Log(HP);}
     public void Heal(int heal) { HP = Mathf.Min(maxHP,HP+Mathf.Max(0,heal));Refresh(); }
     public void SetBroken(bool value) { broken=value;Refresh(); }
     void Refresh()

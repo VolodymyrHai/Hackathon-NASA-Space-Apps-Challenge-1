@@ -69,7 +69,8 @@ public class BarsLogic : MonoBehaviour
     {
         bool wasAlive = thirst > 0f;
         thirst = Mathf.Clamp(thirst + amount, 0f, 100f);
-        if (wasAlive && thirst <= 0f) onThirstEmpty?.Invoke();
+        if (thirst <= 0f) 
+            StaticBarsLogic.d.SmertjVNishchitje();
         UpdateUI();
     }
 
@@ -77,7 +78,8 @@ public class BarsLogic : MonoBehaviour
     {
         bool wasAlive = hunger > 0f;
         hunger = Mathf.Clamp(hunger + amount, 0f, 100f);
-        if (wasAlive && hunger <= 0f) onHungerEmpty?.Invoke();
+        if (hunger <= 0f) 
+            StaticBarsLogic.d.SmertjVNishchitje();
         UpdateUI();
     }
 
@@ -85,7 +87,8 @@ public class BarsLogic : MonoBehaviour
     {
         bool wasAlive = mind > 0f;
         mind = Mathf.Clamp(mind + amount, 0f, 100f);
-        if (wasAlive && mind <= 0f) onMindEmpty?.Invoke();
+        if (mind <= 0f) 
+            StaticBarsLogic.d.SmertjVNishchitje();
         UpdateUI();
     }
 

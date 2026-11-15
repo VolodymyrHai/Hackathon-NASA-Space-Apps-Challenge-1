@@ -55,14 +55,20 @@ public class RadBarsLogic : MonoBehaviour
     private void ChangeOxygen()
     {
         oxygen = Mathf.Clamp(oxygen + oxygenChange*oxygenRecovery-oxygenDrain,0,100);
+        if (oxygen <= 0)
+        {
+            StaticBarsLogic.d.SmertjVNishchitje();
+        }
         UpdateUI();
     }
     private void ChangeRadiation()
     {
-        Debug.Log(StaticBarsLogic.entry);
-        Debug.Log(radiationChange);
         if((!StaticBarsLogic.entry && radiationChange>0) || radiationChange<=0)
             radiation = Mathf.Clamp(radiation + radiationChange*radiationDrain,0,100);
+        if (radiation >= 100)
+        {
+            StaticBarsLogic.d.SmertjVNishchitje();
+        }
         UpdateUI();
     }
     private void UpdateUI()

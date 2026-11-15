@@ -32,13 +32,15 @@ public class ButtonPress : MonoBehaviour
     public BodyPartType bpt;
     public void StartSequence()
     {
+        if(
+        CommandCentreInteraction.medicine>=1){
         attempts = 0;
         errors = 0;
         isRunning = true;
         gameObject.SetActive(true);
         text.gameObject.SetActive(false);
         CommandCentreInteraction.medicine-=1;
-        StartCoroutine(waitPlay());
+        StartCoroutine(waitPlay());}
     }
     public IEnumerator waitPlay()
     {

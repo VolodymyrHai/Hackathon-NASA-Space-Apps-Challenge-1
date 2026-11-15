@@ -9,9 +9,23 @@ public class Magas : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private Image image;
     [SerializeField] private Button[] btn;
+    [SerializeField] private GameObject[] can;
 
     private bool buy = true;
+    public void SwitchCanvases(int i)
+    {
+        if (i == 0)
+        {
+            can[0].gameObject.SetActive(true);
+            can[1].gameObject.SetActive(false);
+        }
 
+        if (i == 1)
+        {
+            can[1].gameObject.SetActive(true);
+            can[0].gameObject.SetActive(false);
+        }
+    }
     void Awake()
     {
         buy = true;
@@ -52,20 +66,12 @@ public class Magas : MonoBehaviour
         }
         buy = false;
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(1200);
 
         for (int i = 0; i < btn.Length; i++)
         {
             btn[i].interactable = true;
         }
         buy = true;
-    }
-
-    void Update()
-    {
-        if (Keyboard.current.bKey.wasPressedThisFrame)
-        {
-            image.gameObject.SetActive(!image.gameObject.activeSelf);
-        }
     }
 }

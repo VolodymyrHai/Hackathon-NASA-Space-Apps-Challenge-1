@@ -3,6 +3,7 @@ using UnityEngine;
 
 public static class StaticBarsLogic
 {
+    public static Death d;
     public static bool entry =false;
     public static void Damage(BodyPartType type,int damage) { if(model!=null) model.ChangeDamage(type,damage); }
     public static void Heal(BodyPartType type,int heal) { if(model!=null) model.ChangeHeal(type,heal); }
@@ -11,6 +12,7 @@ public static class StaticBarsLogic
     static public BarsHpLogic model;
     static public RadBarsLogic rad;
     static public BarsLogic bars;
+    static public int rada;
     static public void Oxygen( int change)
     {
         // 0 або 1 для зміни
@@ -18,6 +20,7 @@ public static class StaticBarsLogic
     }
     static public void Radiation(int change)
     {
+        rada =change;
         rad.radiationChange = change;
     }
     static public void ChangeThirst(int change)
