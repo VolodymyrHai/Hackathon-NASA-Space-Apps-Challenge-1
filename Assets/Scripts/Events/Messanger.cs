@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Messanger : MonoBehaviour
 {
-    [SerializeField] private TMP_Text text;
+    [SerializeField] private GameObject canvas;
     public void Show()
     {
         StartCoroutine(Close());
     }
     private IEnumerator Close()
     {
-        text.gameObject.SetActive(true);
+        canvas.SetActive(true);
         yield return new WaitForSeconds(5);
-        text.gameObject.SetActive(false);
+        canvas.SetActive(false);
     }
 }
