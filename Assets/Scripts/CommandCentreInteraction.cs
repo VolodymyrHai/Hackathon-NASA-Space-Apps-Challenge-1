@@ -14,7 +14,6 @@ public class CommandCentreInteraction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waterTMP;
     [SerializeField] private TextMeshProUGUI foodTMP;
     [SerializeField] private TextMeshProUGUI energyTMP;
-    [SerializeField] private TextMeshProUGUI WaterTMP;
     [SerializeField] private TextMeshProUGUI medicineTMP;
     [SerializeField] private TextMeshProUGUI solarPanelTMP;
 
