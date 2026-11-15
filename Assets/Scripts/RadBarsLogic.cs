@@ -59,7 +59,10 @@ public class RadBarsLogic : MonoBehaviour
     }
     private void ChangeRadiation()
     {
-        radiation = Mathf.Clamp(radiation + radiationChange*radiationDrain,0,100);
+        Debug.Log(StaticBarsLogic.entry);
+        Debug.Log(radiationChange);
+        if((!StaticBarsLogic.entry && radiationChange>0) || radiationChange<=0)
+            radiation = Mathf.Clamp(radiation + radiationChange*radiationDrain,0,100);
         UpdateUI();
     }
     private void UpdateUI()

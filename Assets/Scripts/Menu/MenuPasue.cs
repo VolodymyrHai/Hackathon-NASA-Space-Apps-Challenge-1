@@ -34,6 +34,7 @@ public class MenuPasue : MonoBehaviour
     }
     public void SaveExit()
     {
-        SceneManager.LoadScene(2);
+        Time.timeScale= 1f;
+        SceneManager.LoadScene(0);
     }
 }
